@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CancionesLocalDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Albums">
+          <Key>
+            <PropertyRef Name="AlbumID" />
+          </Key>
+          <Property Name="AlbumID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ArtistaID" Type="int" Nullable="false" />
+          <Property Name="NombreAlbum" Type="nvarchar(max)" />
+          <Property Name="AnioLanzamiento" Type="int" Nullable="false" />
+          <Property Name="NumCanciones" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Artistas">
+          <Key>
+            <PropertyRef Name="ArtistaID" />
+          </Key>
+          <Property Name="ArtistaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NombrePilaArtista" Type="nvarchar(max)" />
+          <Property Name="NombreArtistico" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="FechaNacimiento" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Canciones">
+          <Key>
+            <PropertyRef Name="CancionID" />
+          </Key>
+          <Property Name="CancionID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AlbumID" Type="int" Nullable="false" />
+          <Property Name="NombreCancion" Type="nvarchar(max)" />
+          <Property Name="Duracion" Type="float" Nullable="false" />
+          <Property Name="AnioLanzamiento" Type="int" Nullable="false" />
+          <Property Name="Compositor" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK_dbo_Albums_dbo_Artistas_ArtistaID">
+          <End Role="Artistas" Type="Self.Artistas" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Albums" Type="Self.Albums" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artistas">
+              <PropertyRef Name="ArtistaID" />
+            </Principal>
+            <Dependent Role="Albums">
+              <PropertyRef Name="ArtistaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Canciones_dbo_Albums_AlbumID">
+          <End Role="Albums" Type="Self.Albums" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Canciones" Type="Self.Canciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Albums">
+              <PropertyRef Name="AlbumID" />
+            </Principal>
+            <Dependent Role="Canciones">
+              <PropertyRef Name="AlbumID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CancionesLocalDBModelStoreContainer">
+          <EntitySet Name="Albums" EntityType="Self.Albums" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Artistas" EntityType="Self.Artistas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Canciones" EntityType="Self.Canciones" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Albums_dbo_Artistas_ArtistaID" Association="Self.FK_dbo_Albums_dbo_Artistas_ArtistaID">
+            <End Role="Artistas" EntitySet="Artistas" />
+            <End Role="Albums" EntitySet="Albums" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Canciones_dbo_Albums_AlbumID" Association="Self.FK_dbo_Canciones_dbo_Albums_AlbumID">
+            <End Role="Albums" EntitySet="Albums" />
+            <End Role="Canciones" EntitySet="Canciones" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CancionesLocalDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Albums">
+          <Key>
+            <PropertyRef Name="AlbumID" />
+          </Key>
+          <Property Name="AlbumID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ArtistaID" Type="Int32" Nullable="false" />
+          <Property Name="NombreAlbum" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AnioLanzamiento" Type="Int32" Nullable="false" />
+          <Property Name="NumCanciones" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Artistas" Relationship="Self.FK_dbo_Albums_dbo_Artistas_ArtistaID" FromRole="Albums" ToRole="Artistas" />
+          <NavigationProperty Name="Canciones" Relationship="Self.FK_dbo_Canciones_dbo_Albums_AlbumID" FromRole="Albums" ToRole="Canciones" />
+        </EntityType>
+        <EntityType Name="Artistas">
+          <Key>
+            <PropertyRef Name="ArtistaID" />
+          </Key>
+          <Property Name="ArtistaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NombrePilaArtista" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="NombreArtistico" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FechaNacimiento" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Albums" Relationship="Self.FK_dbo_Albums_dbo_Artistas_ArtistaID" FromRole="Artistas" ToRole="Albums" />
+        </EntityType>
+        <EntityType Name="Canciones">
+          <Key>
+            <PropertyRef Name="CancionID" />
+          </Key>
+          <Property Name="CancionID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AlbumID" Type="Int32" Nullable="false" />
+          <Property Name="NombreCancion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Duracion" Type="Double" Nullable="false" />
+          <Property Name="AnioLanzamiento" Type="Int32" Nullable="false" />
+          <Property Name="Compositor" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Albums" Relationship="Self.FK_dbo_Canciones_dbo_Albums_AlbumID" FromRole="Canciones" ToRole="Albums" />
+        </EntityType>
+        <Association Name="FK_dbo_Albums_dbo_Artistas_ArtistaID">
+          <End Role="Artistas" Type="Self.Artistas" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Albums" Type="Self.Albums" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Artistas">
+              <PropertyRef Name="ArtistaID" />
+            </Principal>
+            <Dependent Role="Albums">
+              <PropertyRef Name="ArtistaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Canciones_dbo_Albums_AlbumID">
+          <End Role="Albums" Type="Self.Albums" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Canciones" Type="Self.Canciones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Albums">
+              <PropertyRef Name="AlbumID" />
+            </Principal>
+            <Dependent Role="Canciones">
+              <PropertyRef Name="AlbumID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CancionesLocalDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Albums" EntityType="Self.Albums" />
+          <EntitySet Name="Artistas" EntityType="Self.Artistas" />
+          <EntitySet Name="Canciones" EntityType="Self.Canciones" />
+          <AssociationSet Name="FK_dbo_Albums_dbo_Artistas_ArtistaID" Association="Self.FK_dbo_Albums_dbo_Artistas_ArtistaID">
+            <End Role="Artistas" EntitySet="Artistas" />
+            <End Role="Albums" EntitySet="Albums" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Canciones_dbo_Albums_AlbumID" Association="Self.FK_dbo_Canciones_dbo_Albums_AlbumID">
+            <End Role="Albums" EntitySet="Albums" />
+            <End Role="Canciones" EntitySet="Canciones" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CancionesLocalDBModelStoreContainer" CdmEntityContainer="CancionesLocalDBEntities">
+          <EntitySetMapping Name="Albums">
+            <EntityTypeMapping TypeName="CancionesLocalDBModel.Albums">
+              <MappingFragment StoreEntitySet="Albums">
+                <ScalarProperty Name="AlbumID" ColumnName="AlbumID" />
+                <ScalarProperty Name="ArtistaID" ColumnName="ArtistaID" />
+                <ScalarProperty Name="NombreAlbum" ColumnName="NombreAlbum" />
+                <ScalarProperty Name="AnioLanzamiento" ColumnName="AnioLanzamiento" />
+                <ScalarProperty Name="NumCanciones" ColumnName="NumCanciones" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Artistas">
+            <EntityTypeMapping TypeName="CancionesLocalDBModel.Artistas">
+              <MappingFragment StoreEntitySet="Artistas">
+                <ScalarProperty Name="ArtistaID" ColumnName="ArtistaID" />
+                <ScalarProperty Name="NombrePilaArtista" ColumnName="NombrePilaArtista" />
+                <ScalarProperty Name="NombreArtistico" ColumnName="NombreArtistico" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Canciones">
+            <EntityTypeMapping TypeName="CancionesLocalDBModel.Canciones">
+              <MappingFragment StoreEntitySet="Canciones">
+                <ScalarProperty Name="CancionID" ColumnName="CancionID" />
+                <ScalarProperty Name="AlbumID" ColumnName="AlbumID" />
+                <ScalarProperty Name="NombreCancion" ColumnName="NombreCancion" />
+                <ScalarProperty Name="Duracion" ColumnName="Duracion" />
+                <ScalarProperty Name="AnioLanzamiento" ColumnName="AnioLanzamiento" />
+                <ScalarProperty Name="Compositor" ColumnName="Compositor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
