@@ -1,0 +1,42 @@
+﻿@model FogachoDatabaseFirst.Models.Artistas
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Artistas</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NombrePilaArtista)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombrePilaArtista)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.NombreArtistico)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NombreArtistico)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaNacimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FechaNacimiento)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ArtistaID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
